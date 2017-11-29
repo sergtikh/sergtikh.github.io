@@ -1,47 +1,58 @@
 package main
-
 import (
 	"unicode"
+	//"fmt"
 )
 
 func RemoveEven(input []int) []int {
-	slice := make([]int, 0)
-	for i := range input {
-		if input[i]%2 == 1 {
-			slice = append(slice, input[i])
+	var result []int
+	for i, elem := range input {
+		if input[i] % 2 == 1 {
+			result = append(result, elem);
 		}
 	}
-	return slice
+	return result
 }
 
-func DifferentWordsCount(s string) int {
-	allWords := make([]string, 1)
-	var j = 0
-	var isNotWord = false
-	for i:= range s {
-		if unicode.IsLetter(rune(s[i])){
-			allWords[j] = allWords[j] + string(unicode.ToLower(rune(s[i])))
-			isNotWord = false
-		} else if !isNotWord {
-			isNotWord = true
-			allWords = append(allWords, "")
-			j = j + 1
-		}
-	}
-	result := make(map[string]int)
-	for i := 0; i < len(allWords); i++ {
-		if allWords[i] != "" {
-			result[allWords[i]]++
-		}
-	}
-	return len(result)
-}
-
-func PowerGenerator(a int) func() int{
+func PowerGenerator(a int) (func() int) {
 	b := a
-	return func() (pow int) {
-		pow = b
+	return func() (ret int) {
+		ret = b
 		b = b * a
 		return
 	}
 }
+
+func DifferentWordsCount(text string) int {
+	var words []string
+	words = append(words, "")
+	j := 0
+	EndOfWord := false
+	for i := range text {
+		if unicode.IsLetter(rune(text[i])) {
+			words[j] = words[j] + string(unicode.ToLower(rune(text[i])))
+			EndOfWord = false
+		} else if !EndOfWord {
+			EndOfWord = true
+			words = append(words, "")
+			j++
+		}
+	}
+	DifferentWords :=  make(map[string]int)
+	for i := range words {
+		if words[i] != "" {
+			DifferentWords[words[i]]++
+		}
+	}
+	return len(DifferentWords)
+}
+
+/*func main() {
+	input := []int{0, 3, 2, 5}
+	result := RemoveEven(input)
+	fmt.Println(result)
+	gen := PowerGenerator(2)
+	fmt.Println(gen())
+	fmt.Println(gen())
+	fmt.Println(DifferentWordsCount("Hello, world!HELLO  wOrlD...12"))
+}*/
